@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Bootstrap Example</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+  <link rel="stylesheet" href="my.css">
+</head>
+<body>
+
+<div class="jumbotron text-center">
+  <h1>Catalog</h1>
+</div>
+<nav class="navbar navbar-default">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <a class="navbar-brand" href="/welcome">JAVA_MVC</a>
+		<a class="navbar-brand" href="/userpage">ADD CONTACTS</a>
+		<a class="navbar-brand" href="/mycontacts">MY CONTACTS</a>
+      </div>
+      <ul class="nav navbar-right">
+		<a class="navbar-brand"><button id="logout">Logout</button></a>
+        
+      </ul>
+    </div>
+  </nav>
+<div class="container">
+  <div class="row">
+    <div class="col-sm-12">
+        <center>
+    <h1>Welcome</h1>
+    <h3 id="user"></h3>
+
+     <p>
+        This Java web application you is a phone book application with contact management and note-taking functionalities. Here is a synopsis of the application's features:<br>
+
+User Registration: Users can create an account to access the application's features. They will provide their personal details such as username, password, and possibly additional information.<br>
+
+User Authentication: After registration, users can log in to the application using their credentials. This ensures that each user can access their own contacts and notes securely.<br>
+
+Contact Management:<br>
+
+Adding Contacts: Users can add new contacts to their phone book. Each contact will have fields for first name, telephone number, address, email, and comments.<br>
+Searching Contacts: Users can search for specific contacts using criteria such as name, telephone number, or email.<br>
+Listing Contacts: Users can view a list of all their contacts, displaying the relevant details for each contact.<br>
+Note-Taking:<br>
+
+Adding Notes: Users can add notes for each contact. Notes can be either topological or simple.<br>
+Simple Notes: Users can add simple notes with fields for date, title, and note content.<br>
+Topological Notes: Users can add topological notes with fields for date, title, note content, and a point on a map (latitude and longitude coordinates).<br>
+Associating Notes with Contacts: Users can link notes to specific contacts in their phone book. This allows them to organize and categorize their notes based on the associated contact.<br>
+User-Specific Environment: Each user will have their own isolated environment within the application. Their contacts and notes will be separate from other users, ensuring privacy and data integrity.<br>
+
+Overall, this Java web application provides users with the ability to manage their contacts, search for specific contacts, and keep notes associated with each contact. The application's user registration and authentication features ensure secure access and data separation for each user.
+
+
+
+
+     </p>
+    </center> 
+    </div>	
+  </div>
+</div>
+
+<script>
+	
+	
+	$.get("/getuser",(res)=>{
+		$("#user").html(res.fullname+" "+res.id);
+	})
+	
+	
+	
+
+</script>

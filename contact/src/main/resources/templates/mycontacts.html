@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Bootstrap Example</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+  <link rel="stylesheet" href="my.css">
+</head>
+<body>
+
+<div class="jumbotron text-center">
+  <h1>My Contacts</h1>
+</div>
+<nav class="navbar navbar-default">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <a class="navbar-brand" href="/welcome">JAVA_MVC</a>
+		<a class="navbar-brand" href="/userpage">ADD CONTACTS</a>
+		<a class="navbar-brand" href="/users">MY CONTACTS</a>
+      </div>
+      <ul class="nav navbar-right">
+		<a class="navbar-brand"><button id="logout">Logout</button></a>
+        
+      </ul>
+    </div>
+  </nav>
+<div class="container">
+  <div class="row">
+    <div class="contacts">
+        <div >
+            <table class="table table-hover">
+                <thead>
+                  <tr>
+                    <th>Fullname</th>
+                    <th>Phone</th>
+                    <th>Email</th>
+                    <th>Address</th>
+                    <th>Comment</th>
+                    
+                  </tr>
+                </thead>
+                <tbody id="data">
+                 
+                </tbody>
+              </table>
+        </div>
+    </div>
+  	
+	
+  </div>
+</div>
+
+<script>
+	function getall()
+	{
+		$.get("/getphones",(res)=>{
+			h="";
+			for (var i=0;i<res.length;i++)
+				{
+				h+=`<tr>
+                    <td>${res[i].fullname}</td>
+                    <td>${res[i].phone}</td>
+                    <td>${res[i].email}</td>
+                    <td>${res[i].address}</td>
+                    <td>${res[i].comment}</td>
+                    <td><a href="/note?id=${res[i].id}">Add Note</a></td>
+                    <td><a href="/mapnote?id=${res[i].id}">Map Note</a></td>
+                  </tr> `;
+				}
+			$("#data").html(h);
+		})
+		
+	}
+
+	
+	getall();
+	$("#logout").click(()=>{
+		$.get("/logout",()=>{
+			window.location.href="/";
+		})
+	});
+</script>

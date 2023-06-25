@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Bootstrap Example</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+  <link rel="stylesheet" href="my.css">
+  <link rel="stylesheet" href="my2.css">
+  <script src="my.js"></script>
+</head>
+<body>
+
+<div class="jumbotron text-center">
+  <h1>My Contacts</h1>
+</div>
+<nav class="navbar navbar-default">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <a class="navbar-brand" href="/welcome">JAVA_MVC</a>
+        <a class="navbar-brand" href="/userpage">ADD CONTACTS</a>
+        <a class="navbar-brand" href="/mycontacts">MY CONTACTS</a>
+      </div>
+      <ul class="nav navbar-right">
+        <a class="navbar-brand"><button id="logout">Logout</button></a>
+        
+      </ul>
+    </div>
+  </nav>
+<div class="container">
+  
+    <div class="contacts">
+        <div>
+            <table class="table table-hover">
+                <thead>
+                  <tr>
+                    <th>Fullname</th>
+                    <th>Phone</th>
+                    <th>Email</th>
+                    <th>Address</th>
+                    <th>Comment</th>
+                  </tr>
+                </thead>
+                <tbody id="data">
+                    <td id="fullname"></td>
+                    <td id="phone"></td>
+                    <td id="email"></td>
+                    <td id="address"></td>
+                    <td id="comment"></td>
+                </tbody>
+              </table>
+        </div>
+    </div>
+    <div class="note">
+        <div class="col-md-12">
+          <form id="frm4">
+            <label for="date">Date:</label>
+            <input type="date" id="date" name="date">
+        
+            <label for="title">Title:</label>
+            <input type="text" id="title" name="title">
+        
+            <label for="note">Note:</label>
+            <textarea id="content" name="content" rows="4"></textarea>
+
+            <div id="map"></div>
+        
+            <label for="latitude">Latitude:</label>
+            <input type="text" id="latitude" name="lat">
+        
+            <label for="longitude">Longitude:</label>
+            <input type="text" id="longitude" name="lng">
+        
+            <input type="submit" value="Save Note">
+          </form>
+        </div>
+        <div class="col-md-12">
+            <center>
+            <h3><u>My Notes</u></h3>
+            </center>
+            <div class="tablest">
+                <table class="table table-hover">
+                    <thead>
+                      <tr>
+                        <th>Date</th>
+                        <th>Title</th>
+                        <th>Note</th>
+                        <th>Langtitude</th>
+                        <th>Longitude</th>
+                      </tr>
+                    </thead>
+                    <tbody id="notes">
+                        
+                    </tbody>
+                  </table>
+            </div>
+           
+        </div>
+    </div>
+    
+    
+  
+</div>
+
+<script>
+      // Retrieve the user ID from the URL query parameter
+      const urlParams = new URLSearchParams(window.location.search);
+      const userId = urlParams.get('id');
+      // Function to retrieve the user's phone data
+      function getPhoneData() {
+          $.get(`/getphone?id=${userId}`, (res) => {
+              // Use the response data to populate the note section
+              if (res) {
+                  $('#fullname').text(res.fullname);
+                  $('#phone').text(res.phone);
+                  $('#email').text(res.email);
+                  $('#address').text(res.address);
+                  $('#comment').text(res.comment);
+              }
+          });
+      }
+  
+      // Call the function to fetch the phone data on page load
+      getPhoneData();
+    $("#logout").click(()=>{
+        $.get("/logout",()=>{
+            window.location.href="/";
+        })
+    });
+
+    
+
+    function getall(id) {
+        $.get(`/getnotes?id=${userId}`, (res) => {
+            let h = "";
+            for (let i = 0; i < res.length; i++) {
+                h += `<tr> 
+                        <td>${res[i].date}</td>
+                        <td>${res[i].title}</td>
+                        <td>${res[i].content}</td>
+                        <td>${res[i].lat}</td>
+                        <td>${res[i].lng}</td>
+                      </tr>`;
+            }
+            $("#notes").html(h);
+        });
+    }
+
+
+    $("#frm4").submit((event) => {
+      event.preventDefault();
+    
+      // Retrieve the contact ID from the URL query parameter
+      const urlParams = new URLSearchParams(window.location.search);
+      const contactId = urlParams.get('id');
+    
+      // Retrieve the latitude and longitude values
+      const latitude = $("#latitude").val();
+      const longitude = $("#longitude").val();
+    
+      // Append the latitude and longitude values to the form data
+      const formData = $("#frm4").serialize() + "&lat=" + latitude + "&lng=" + longitude + "&contact_id=" + contactId;
+      alert(formData);
+    
+      $.post("/addmapnote", formData, (res) => {
+        if (res === "1") {
+          $("#frm4")[0].reset();
+          getall(); // Fetch all notes after saving the note
+        } else {
+          alert("Error occurred while saving the note");
+        }
+      });
+    });    
+    
+  getall(); // Fetch all notes after saving the note
+   
+    
+</script>
+<script
+      src="https://maps.googleapis.com/maps/api/js?callback=initMap2&v=weekly"
+      defer
+      
+    ></script>
+    <script src="my.js"></script>
+
+   
+<script>

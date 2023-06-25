@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Bootstrap Example</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+  <link rel="stylesheet" href="my.css">
+</head>
+<body>
+
+<div class="jumbotron text-center">
+  <h1>Add Contacts</h1>
+</div>
+<nav class="navbar navbar-default">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <a class="navbar-brand" href="/welcome">JAVA_MVC</a>
+		<a class="navbar-brand" href="/userpage">ADD CONTACTS</a>
+		<a class="navbar-brand" href="/mycontacts">MY CONTACTS</a>
+      </div>
+      <ul class="nav navbar-right">
+		<a class="navbar-brand"><button id="logout">Logout</button></a>
+        
+      </ul>
+    </div>
+  </nav>
+<div class="container">
+  <div class="row">
+    <div class="col-sm-12">
+     <center><h2>You are logged in as: </h2> <h3 id="user"></h3></center> 
+
+     	<form id="frm1">
+
+            <div class="form-group">Fullname: <input class="form-control" type="text" name="fullname"><br></div>
+     		
+             <div class="form-group">Phone: <input  class="form-control" type="text" name="phone"><br></div>
+     		
+             <div class="form-group">Address: <input class="form-control" type="text" name="address"><br></div>
+
+			 <div class="form-group">Email: <input class="form-control" type="text" name="email"><br></div>
+
+             <div class="form-group">Comment: <textarea class="form-control" type="text" name="comment"></textarea><br></div>
+     		
+     		<input class="btn btn-default" type=submit>
+     		
+     		
+     	</form>
+    </div>
+  	<div id="data">
+  	
+  	</div>
+	
+  </div>
+</div>
+
+<script>
+	
+	$.get("/getuser",(res)=>{
+		$("#user").html(res.fullname+" "+res.id);
+	})
+	
+	$("#frm1").submit(()=>{
+		
+		
+		event.preventDefault();
+		$.post("/addphone",$("#frm1").serialize(),(res)=>{
+			$("#frm1")[0].reset();
+		})
+	});
+	
+	
+	$("#logout").click(()=>{
+		$.get("/logout",()=>{
+			window.location.href="/";
+		})
+	});
+</script>
